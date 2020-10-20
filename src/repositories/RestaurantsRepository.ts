@@ -30,6 +30,10 @@ class RestaurantsRepository {
 
 	  return restaurant;
 	}
+
+	public all(): Restaurant[] {
+	  return this.restaurants;
+	}
 }
 
 export default RestaurantsRepository;

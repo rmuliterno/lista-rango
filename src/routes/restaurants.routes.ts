@@ -7,6 +7,12 @@ import RestaurantsRepository from '../repositories/RestaurantsRepository';
 const restaurantsRouter = Router();
 const restaurantsRepository = new RestaurantsRepository();
 
+restaurantsRouter.get('/', (request, response) => {
+  const restaurants = restaurantsRepository.all();
+
+  return response.json(restaurants);
+});
+
 restaurantsRouter.post('/', (request, response) => {
   const {
     name,
