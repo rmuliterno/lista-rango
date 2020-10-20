@@ -20,6 +20,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+      "no-tabs": "off",
+      "no-mixed-spaces-and-tabs": "off",
 			"import/extensions": [
 				"error",
 				"ignorePackages",

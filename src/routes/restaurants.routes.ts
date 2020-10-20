@@ -1,12 +1,11 @@
 import { Router } from 'express';
-import { uuid } from 'uuidv4';
 import { startOfHour, parseISO, isEqual } from 'date-fns';
 
 import Restaurant from '../models/Restaurant';
+import RestaurantsRepository from '../repositories/RestaurantsRepository';
 
 const restaurantsRouter = Router();
-
-const restaurants: Restaurant[] = [];
+const restaurantsRepository = new RestaurantsRepository();
 
 restaurantsRouter.post('/', (request, response) => {
   const {
@@ -40,7 +39,7 @@ restaurantsRouter.post('/', (request, response) => {
     );
   }
 
-  const restaurant = new Restaurant(
+  const restaurant = restaurantsRepository.create(
     name,
     photo,
     address,
@@ -49,8 +48,6 @@ restaurantsRouter.post('/', (request, response) => {
     parsedSpecialHoursStartDate,
     parsedSpecialHoursEndDate,
   );
-
-  restaurants.push(restaurant);
 
   return response.json(restaurant);
 });
