@@ -17,15 +17,15 @@ class Restaurant {
 
 	specialHoursEnd: Date,
 
-	constructor(
-		name: string,
-		photo: string,
-		address: string,
-		regularHoursStart: Date,
-		regularHoursEnd: Date,
-		specialHoursStart: Date,
-		specialHoursEnd: Date
-	){
+	constructor({
+    name,
+    photo,
+    address,
+    regularHoursStart,
+    regularHoursEnd,
+    specialHoursStart,
+    specialHoursEnd
+  }: Omit<Restaurant, 'id'>) {
 		this.id = uuid();
 		this.name = name;
 		this.photo = photo;

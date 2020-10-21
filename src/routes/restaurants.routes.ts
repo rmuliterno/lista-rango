@@ -45,15 +45,15 @@ restaurantsRouter.post('/', (request, response) => {
     );
   }
 
-  const restaurant = restaurantsRepository.create(
+  const restaurant = restaurantsRepository.create({
     name,
     photo,
     address,
-    parsedRegularHoursStartDate,
-    parsedRegularHoursEndDate,
-    parsedSpecialHoursStartDate,
-    parsedSpecialHoursEndDate,
-  );
+    regularHoursStart: parsedRegularHoursStartDate,
+    regularHoursEnd: parsedRegularHoursEndDate,
+    specialHoursStart: parsedSpecialHoursStartDate,
+    specialHoursEnd: parsedSpecialHoursEndDate,
+  });
 
   return response.json(restaurant);
 });

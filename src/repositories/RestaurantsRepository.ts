@@ -1,5 +1,15 @@
 import Restaurant from '../models/Restaurant';
 
+interface CreateRestaurantDTO {
+  name: string;
+  photo: string;
+  address: string;
+  regularHoursStart: Date;
+  regularHoursEnd: Date;
+  specialHoursStart: Date;
+  specialHoursEnd: Date;
+}
+
 class RestaurantsRepository {
 	private restaurants: Restaurant[];
 
@@ -7,16 +17,10 @@ class RestaurantsRepository {
 	  this.restaurants = [];
 	}
 
-	public create(
-	  name: string,
-	  photo: string,
-	  address: string,
-	  regularHoursStart: Date,
-	  regularHoursEnd: Date,
-	  specialHoursStart: Date,
-	  specialHoursEnd: Date,
-	): Restaurant {
-	  const restaurant = new Restaurant(
+	public create({
+	  name, photo, address, regularHoursStart, regularHoursEnd, specialHoursStart, specialHoursEnd,
+	}: CreateRestaurantDTO): Restaurant {
+	  const restaurant = new Restaurant({
 	    name,
 	    photo,
 	    address,
@@ -24,7 +28,7 @@ class RestaurantsRepository {
 	    regularHoursEnd,
 	    specialHoursStart,
 	    specialHoursEnd,
-	  );
+	  });
 
 	  this.restaurants.push(restaurant);
 
