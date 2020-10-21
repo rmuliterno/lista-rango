@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { startOfHour, parseISO, isEqual } from 'date-fns';
+import { parseISO } from 'date-fns';
 
-import Restaurant from '../models/Restaurant';
 import RestaurantsRepository from '../repositories/RestaurantsRepository';
+import CreateRestaurantService from '../services/CreateRestaurantService';
 
 const restaurantsRouter = Router();
 const restaurantsRepository = new RestaurantsRepository();
@@ -14,48 +14,33 @@ restaurantsRouter.get('/', (request, response) => {
 });
 
 restaurantsRouter.post('/', (request, response) => {
-  const {
-    name,
-    photo,
-    address,
-    regularHoursStart,
-    regularHoursEnd,
-    specialHoursStart,
-    specialHoursEnd,
-  } = request.body;
+  try {
+    const {
+      name,
+      photo,
+      address,
+      regularHoursStart,
+      regularHoursEnd,
+      specialHoursStart,
+      specialHoursEnd,
+    } = request.body;
 
-  const parsedRegularHoursStartDate = startOfHour(parseISO(regularHoursStart));
-  const parsedRegularHoursEndDate = startOfHour(parseISO(regularHoursEnd));
-  const parsedSpecialHoursStartDate = startOfHour(parseISO(specialHoursStart));
-  const parsedSpecialHoursEndDate = startOfHour(parseISO(specialHoursEnd));
+    const createRestaurant = new CreateRestaurantService(restaurantsRepository);
 
-  const isRegularHoursEqual = isEqual(parsedRegularHoursStartDate, parsedRegularHoursEndDate);
+    const restaurant = createRestaurant.execute({
+      name,
+      photo,
+      address,
+      regularHoursStart: parseISO(regularHoursStart),
+      regularHoursEnd: parseISO(regularHoursEnd),
+      specialHoursStart: parseISO(specialHoursStart),
+      specialHoursEnd: parseISO(specialHoursEnd),
+    });
 
-  if (isRegularHoursEqual) {
-    return response.status(400).json(
-      { message: 'You cannot create a restaurant when the opening hour is the same as the closing hour on regular days' },
-    );
+    return response.json(restaurant);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const isSpecialHoursEqual = isEqual(parsedSpecialHoursStartDate, parsedSpecialHoursEndDate);
-
-  if (isSpecialHoursEqual) {
-    return response.status(400).json(
-      { message: 'You cannot create a restaurant when the opening hour is the same as the closing hour on special days' },
-    );
-  }
-
-  const restaurant = restaurantsRepository.create({
-    name,
-    photo,
-    address,
-    regularHoursStart: parsedRegularHoursStartDate,
-    regularHoursEnd: parsedRegularHoursEndDate,
-    specialHoursStart: parsedSpecialHoursStartDate,
-    specialHoursEnd: parsedSpecialHoursEndDate,
-  });
-
-  return response.json(restaurant);
 });
 
 export default restaurantsRouter;
