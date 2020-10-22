@@ -1,43 +1,26 @@
+import { EntityRepository, Repository } from 'typeorm';
 import Restaurant from '../models/Restaurant';
 
-interface CreateRestaurantDTO {
-  name: string;
-  photo: string;
-  address: string;
-  regularHoursStart: Date;
-  regularHoursEnd: Date;
-  specialHoursStart: Date;
-  specialHoursEnd: Date;
-}
+@EntityRepository(Restaurant)
+class RestaurantsRepository extends Repository<Restaurant> {
 
-class RestaurantsRepository {
-	private restaurants: Restaurant[];
+  // public create({
+  //   name, photo, address, regularHoursStart, regularHoursEnd, specialHoursStart, specialHoursEnd,
+  // }: CreateRestaurantDTO): Restaurant {
+  //   const restaurant = new Restaurant({
+  //     name,
+  //     photo,
+  //     address,
+  //     regularHoursStart,
+  //     regularHoursEnd,
+  //     specialHoursStart,
+  //     specialHoursEnd,
+  //   });
 
-	constructor() {
-	  this.restaurants = [];
-	}
+  //   this.restaurants.push(restaurant);
 
-	public create({
-	  name, photo, address, regularHoursStart, regularHoursEnd, specialHoursStart, specialHoursEnd,
-	}: CreateRestaurantDTO): Restaurant {
-	  const restaurant = new Restaurant({
-	    name,
-	    photo,
-	    address,
-	    regularHoursStart,
-	    regularHoursEnd,
-	    specialHoursStart,
-	    specialHoursEnd,
-	  });
-
-	  this.restaurants.push(restaurant);
-
-	  return restaurant;
-	}
-
-	public all(): Restaurant[] {
-	  return this.restaurants;
-	}
+  //   return restaurant;
+  // }
 }
 
 export default RestaurantsRepository;

@@ -1,4 +1,5 @@
 import { startOfHour, isEqual } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 
 import Restaurant from '../models/Restaurant';
 import RestaurantsRepository from '../repositories/RestaurantsRepository';
@@ -14,15 +15,11 @@ interface Request {
 }
 
 class CreateRestaurantService {
-  private restaurantsRepository: RestaurantsRepository;
-
-  constructor(restaurantsRepository: RestaurantsRepository) {
-    this.restaurantsRepository = restaurantsRepository;
-  }
-
-  public execute({
+  public async execute({
     name, photo, address, regularHoursStart, regularHoursEnd, specialHoursEnd, specialHoursStart,
-  }: Request): Restaurant {
+  }: Request): Promise<Restaurant> {
+    const restaurantsRepository = getCustomRepository(RestaurantsRepository);
+
     const parsedRegularHoursStartDate = startOfHour(regularHoursStart);
     const parsedRegularHoursEndDate = startOfHour(regularHoursEnd);
     const parsedSpecialHoursStartDate = startOfHour(specialHoursStart);
@@ -40,7 +37,7 @@ class CreateRestaurantService {
       throw Error('You cannot create a restaurant when the opening hour is the same as the closing hour on special days');
     }
 
-    const restaurant = this.restaurantsRepository.create({
+    const restaurant = restaurantsRepository.create({
       name,
       photo,
       address,
@@ -49,6 +46,8 @@ class CreateRestaurantService {
       specialHoursStart: parsedSpecialHoursStartDate,
       specialHoursEnd: parsedSpecialHoursEndDate,
     });
+
+    await restaurantsRepository.save(restaurant);
 
     return restaurant;
   }

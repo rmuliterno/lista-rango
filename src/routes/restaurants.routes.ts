@@ -1,19 +1,20 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 
 import RestaurantsRepository from '../repositories/RestaurantsRepository';
 import CreateRestaurantService from '../services/CreateRestaurantService';
 
 const restaurantsRouter = Router();
-const restaurantsRepository = new RestaurantsRepository();
 
-restaurantsRouter.get('/', (request, response) => {
-  const restaurants = restaurantsRepository.all();
+restaurantsRouter.get('/', async (request, response) => {
+  const restaurantsRepository = getCustomRepository(RestaurantsRepository);
+  const restaurants = await restaurantsRepository.find();
 
   return response.json(restaurants);
 });
 
-restaurantsRouter.post('/', (request, response) => {
+restaurantsRouter.post('/', async (request, response) => {
   try {
     const {
       name,
@@ -25,9 +26,9 @@ restaurantsRouter.post('/', (request, response) => {
       specialHoursEnd,
     } = request.body;
 
-    const createRestaurant = new CreateRestaurantService(restaurantsRepository);
+    const createRestaurant = new CreateRestaurantService();
 
-    const restaurant = createRestaurant.execute({
+    const restaurant = await createRestaurant.execute({
       name,
       photo,
       address,

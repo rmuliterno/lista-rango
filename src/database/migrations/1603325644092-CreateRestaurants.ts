@@ -11,6 +11,7 @@ export default class CreateRestaurants1603325644092 implements MigrationInterfac
             type: 'varchar',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'name',

@@ -5,6 +5,9 @@
   "username": "postgres",
   "password": "docker",
   "database": "lista_rango",
+  "entities": [
+    "./src/models/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],
