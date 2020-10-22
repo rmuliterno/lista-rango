@@ -1,40 +1,30 @@
-import { uuid } from 'uuidv4';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('restaurants')
 class Restaurant {
+  @PrimaryGeneratedColumn('uuid')
 	id: string;
 
+  @Column()
 	name: string;
 
+  @Column()
 	photo: string;
 
+  @Column()
 	address: string;
 
+  @Column('timestamp with time zone')
 	regularHoursStart: Date;
 
+  @Column('timestamp with time zone')
 	regularHoursEnd: Date;
 
+  @Column('timestamp with time zone')
 	specialHoursStart: Date;
 
+  @Column('timestamp with time zone')
 	specialHoursEnd: Date;
-
-	constructor({
-	  name,
-	  photo,
-	  address,
-	  regularHoursStart,
-	  regularHoursEnd,
-	  specialHoursStart,
-	  specialHoursEnd,
-	}: Omit<Restaurant, 'id'>) {
-	  this.id = uuid();
-	  this.name = name;
-	  this.photo = photo;
-	  this.address = address;
-	  this.regularHoursStart = regularHoursStart;
-	  this.regularHoursEnd = regularHoursEnd;
-	  this.specialHoursStart = specialHoursStart;
-	  this.specialHoursEnd = specialHoursEnd;
-	}
 }
 
 export default Restaurant;
