@@ -22,10 +22,6 @@ export default class CreateRestaurants1603325644092 implements MigrationInterfac
             type: 'varchar',
           },
           {
-            name: 'photo',
-            type: 'varchar',
-          },
-          {
             name: 'regularHoursStart',
             type: 'timestamp with time zone',
           },

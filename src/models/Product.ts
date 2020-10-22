@@ -12,6 +12,9 @@ class Product {
   @Column()
   restaurant_id: string;
 
+  @Column()
+	picture: string;
+
   @ManyToOne(() => Restaurant)
   @JoinColumn({ name: 'restaurant_id' })
   restaurant: Restaurant;

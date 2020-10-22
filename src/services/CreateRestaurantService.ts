@@ -6,7 +6,6 @@ import RestaurantsRepository from '../repositories/RestaurantsRepository';
 
 interface Request {
   name: string;
-  photo: string;
   address: string;
   regularHoursStart: Date;
   regularHoursEnd: Date;
@@ -16,7 +15,7 @@ interface Request {
 
 class CreateRestaurantService {
   public async execute({
-    name, photo, address, regularHoursStart, regularHoursEnd, specialHoursEnd, specialHoursStart,
+    name, address, regularHoursStart, regularHoursEnd, specialHoursEnd, specialHoursStart,
   }: Request): Promise<Restaurant> {
     const restaurantsRepository = getCustomRepository(RestaurantsRepository);
 
@@ -39,7 +38,6 @@ class CreateRestaurantService {
 
     const restaurant = restaurantsRepository.create({
       name,
-      photo,
       address,
       regularHoursStart: parsedRegularHoursStartDate,
       regularHoursEnd: parsedRegularHoursEndDate,

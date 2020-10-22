@@ -11,10 +11,10 @@ class Restaurant {
 	name: string;
 
   @Column()
-	photo: string;
+  address: string;
 
   @Column()
-	address: string;
+	picture: string;
 
   @Column('timestamp with time zone')
 	regularHoursStart: Date;
