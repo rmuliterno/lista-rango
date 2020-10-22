@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('restaurants')
 class Restaurant {
@@ -24,7 +26,13 @@ class Restaurant {
 	specialHoursStart: Date;
 
   @Column('timestamp with time zone')
-	specialHoursEnd: Date;
+  specialHoursEnd: Date;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
 
 export default Restaurant;

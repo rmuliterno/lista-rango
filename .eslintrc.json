@@ -22,6 +22,7 @@
     "rules": {
       "no-tabs": "off",
       "no-mixed-spaces-and-tabs": "off",
+      "camelcase": "off",
       "class-methods-use-this": "off",
 			"import/extensions": [
 				"error",

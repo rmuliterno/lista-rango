@@ -8,7 +8,7 @@ export default class CreateRestaurants1603325644092 implements MigrationInterfac
         columns: [
           {
             name: 'id',
-            type: 'varchar',
+            type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()',
@@ -16,37 +16,40 @@ export default class CreateRestaurants1603325644092 implements MigrationInterfac
           {
             name: 'name',
             type: 'varchar',
-            isNullable: false,
           },
           {
             name: 'address',
             type: 'varchar',
-            isNullable: false,
           },
           {
             name: 'photo',
             type: 'varchar',
-            isNullable: false,
           },
           {
             name: 'regularHoursStart',
             type: 'timestamp with time zone',
-            isNullable: false,
           },
           {
             name: 'regularHoursEnd',
             type: 'timestamp with time zone',
-            isNullable: false,
           },
           {
             name: 'specialHoursStart',
             type: 'timestamp with time zone',
-            isNullable: false,
           },
           {
             name: 'specialHoursEnd',
             type: 'timestamp with time zone',
-            isNullable: false,
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
           },
         ],
       }),
