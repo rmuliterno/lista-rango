@@ -19,46 +19,38 @@ restaurantsRouter.get('/', async (request, response) => {
 });
 
 restaurantsRouter.post('/', async (request, response) => {
-  try {
-    const {
-      name,
-      address,
-      regularHoursStart,
-      regularHoursEnd,
-      specialHoursStart,
-      specialHoursEnd,
-    } = request.body;
+  const {
+    name,
+    address,
+    regularHoursStart,
+    regularHoursEnd,
+    specialHoursStart,
+    specialHoursEnd,
+  } = request.body;
 
-    const createRestaurant = new CreateRestaurantService();
+  const createRestaurant = new CreateRestaurantService();
 
-    const restaurant = await createRestaurant.execute({
-      name,
-      address,
-      regularHoursStart: parseISO(regularHoursStart),
-      regularHoursEnd: parseISO(regularHoursEnd),
-      specialHoursStart: parseISO(specialHoursStart),
-      specialHoursEnd: parseISO(specialHoursEnd),
-    });
+  const restaurant = await createRestaurant.execute({
+    name,
+    address,
+    regularHoursStart: parseISO(regularHoursStart),
+    regularHoursEnd: parseISO(regularHoursEnd),
+    specialHoursStart: parseISO(specialHoursStart),
+    specialHoursEnd: parseISO(specialHoursEnd),
+  });
 
-    return response.json(restaurant);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(restaurant);
 });
 
 restaurantsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  try {
-    const updateRestaurantPicture = new UpdateRestaurantPictureService();
+  const updateRestaurantPicture = new UpdateRestaurantPictureService();
 
-    const restaurant = await updateRestaurantPicture.execute({
-      restaurant_id: request.params.id,
-      pictureFilename: request.file.filename,
-    });
+  const restaurant = await updateRestaurantPicture.execute({
+    restaurant_id: request.params.id,
+    pictureFilename: request.file.filename,
+  });
 
-    return response.json(restaurant);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(restaurant);
 });
 
 export default restaurantsRouter;

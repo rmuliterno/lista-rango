@@ -1,6 +1,7 @@
 import { startOfHour, isEqual } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Restaurant from '../models/Restaurant';
 import RestaurantsRepository from '../repositories/RestaurantsRepository';
 
@@ -27,13 +28,13 @@ class CreateRestaurantService {
     const isRegularHoursEqual = isEqual(parsedRegularHoursStartDate, parsedRegularHoursEndDate);
 
     if (isRegularHoursEqual) {
-      throw Error('You cannot create a restaurant when the opening hour is the same as the closing hour on regular days');
+      throw new AppError('You cannot create a restaurant when the opening hour is the same as the closing hour on regular days');
     }
 
     const isSpecialHoursEqual = isEqual(parsedSpecialHoursStartDate, parsedSpecialHoursEndDate);
 
     if (isSpecialHoursEqual) {
-      throw Error('You cannot create a restaurant when the opening hour is the same as the closing hour on special days');
+      throw new AppError('You cannot create a restaurant when the opening hour is the same as the closing hour on special days');
     }
 
     const restaurant = restaurantsRepository.create({

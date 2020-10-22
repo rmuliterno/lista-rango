@@ -18,36 +18,28 @@ productsRouter.get('/', async (request, response) => {
 });
 
 productsRouter.post('/', async (request, response) => {
-  try {
-    const {
-      name, price, category, restaurant_id,
-    } = request.body;
+  const {
+    name, price, category, restaurant_id,
+  } = request.body;
 
-    const createProduct = new CreateProductService();
+  const createProduct = new CreateProductService();
 
-    const product = await createProduct.execute({
-      name, price, category, restaurant_id,
-    });
+  const product = await createProduct.execute({
+    name, price, category, restaurant_id,
+  });
 
-    return response.json(product);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(product);
 });
 
 productsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  try {
-    const updateProductPicture = new UpdateProductService();
+  const updateProductPicture = new UpdateProductService();
 
-    const product = await updateProductPicture.execute({
-      product_id: request.params.id,
-      pictureFilename: request.file.filename,
-    });
+  const product = await updateProductPicture.execute({
+    product_id: request.params.id,
+    pictureFilename: request.file.filename,
+  });
 
-    return response.json(product);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(product);
 });
 
 export default productsRouter;

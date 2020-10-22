@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
+import AppError from '../errors/AppError';
 import Restaurant from '../models/Restaurant';
 import uploadConfig from '../config/upload';
 
@@ -17,7 +18,7 @@ class UpdateRestaurantPictureService {
     const restaurant = await restaurantsRepository.findOne(restaurant_id);
 
     if (!restaurant) {
-      throw new Error('Restaurant not found!');
+      throw new AppError('Restaurant not found!', 404);
     }
 
     // Deleting old file if it exists

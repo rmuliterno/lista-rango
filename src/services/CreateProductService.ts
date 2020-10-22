@@ -1,5 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import ProductsRepository from '../repositories/ProductsRepository';
 import Product from '../models/Product';
 
@@ -21,7 +22,7 @@ class CreateProductService {
     });
 
     if (checkProductExists) {
-      throw new Error('Product already registered in this Restaurant');
+      throw new AppError('Product already registered in this Restaurant');
     }
 
     const product = await productsRepository.create({

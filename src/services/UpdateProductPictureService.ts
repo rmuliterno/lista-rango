@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
+import AppError from '../errors/AppError';
 import Product from '../models/Product';
 import uploadConfig from '../config/upload';
 
@@ -17,7 +18,7 @@ class UpdateProductPictureService {
     const product = await productsRepository.findOne(product_id);
 
     if (!product) {
-      throw new Error('product not found!');
+      throw new AppError('product not found!', 404);
     }
 
     // Deleting old file if it exists
