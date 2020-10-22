@@ -1,8 +1,8 @@
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
+import AppError from '@shared/errors/AppError';
 import ProductsRepository from '../repositories/ProductsRepository';
-import Product from '../models/Product';
+import Product from '../infra/typeorm/entities/Product';
 
 interface Request {
   name: string;

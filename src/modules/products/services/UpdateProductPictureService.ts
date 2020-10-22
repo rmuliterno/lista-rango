@@ -2,9 +2,9 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
-import AppError from '../errors/AppError';
-import Product from '../models/Product';
-import uploadConfig from '../config/upload';
+import AppError from '@shared/errors/AppError';
+import uploadConfig from '@config/upload';
+import Product from '../infra/typeorm/entities/Product';
 
 interface Request {
   product_id: string;

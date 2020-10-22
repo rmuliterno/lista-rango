@@ -2,10 +2,10 @@ import { Router } from 'express';
 import multer from 'multer';
 import { getRepository } from 'typeorm';
 
-import uploadConfig from '../config/upload';
-import Product from '../models/Product';
-import CreateProductService from '../services/CreateProductService';
-import UpdateProductService from '../services/UpdateProductPictureService';
+import uploadConfig from '@config/upload';
+import Product from '@modules/products/infra/typeorm/entities/Product';
+import CreateProductService from '@modules/products/services/CreateProductService';
+import UpdateProductService from '@modules/products/services/UpdateProductPictureService';
 
 const productsRouter = Router();
 const upload = multer(uploadConfig);

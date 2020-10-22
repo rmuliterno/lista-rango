@@ -2,9 +2,9 @@ import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
-import AppError from '../errors/AppError';
-import Restaurant from '../models/Restaurant';
-import uploadConfig from '../config/upload';
+import AppError from '@shared/errors/AppError';
+import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
+import uploadConfig from '@config/upload';
 
 interface Request {
   restaurant_id: string;

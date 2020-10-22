@@ -1,8 +1,8 @@
 import { startOfHour, isEqual } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
-import Restaurant from '../models/Restaurant';
+import AppError from '@shared/errors/AppError';
+import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
 import RestaurantsRepository from '../repositories/RestaurantsRepository';
 
 interface Request {

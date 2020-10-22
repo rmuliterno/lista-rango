@@ -1,8 +1,8 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Product from '../models/Product';
+import Restaurant from '../infra/typeorm/entities/Restaurant';
 
-@EntityRepository(Product)
-class ProductsRepository extends Repository<Product> {
+@EntityRepository(Restaurant)
+class RestaurantsRepository extends Repository<Restaurant> {
 
   // public create({
   //   name, photo, address, regularHoursStart, regularHoursEnd, specialHoursStart, specialHoursEnd,
@@ -23,4 +23,4 @@ class ProductsRepository extends Repository<Product> {
   // }
 }
 
-export default ProductsRepository;
+export default RestaurantsRepository;

@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import multer from 'multer';
-import uploadConfig from '../config/upload';
+import uploadConfig from '@config/upload';
 
-import RestaurantsRepository from '../repositories/RestaurantsRepository';
-import CreateRestaurantService from '../services/CreateRestaurantService';
-import UpdateRestaurantPictureService from '../services/UpdateRestaurantPictureService';
+import RestaurantsRepository from '@modules/restaurants/repositories/RestaurantsRepository';
+import CreateRestaurantService from '@modules/restaurants/services/CreateRestaurantService';
+import UpdateRestaurantPictureService from '@modules/restaurants/services/UpdateRestaurantPictureService';
 
 const restaurantsRouter = Router();
 const upload = multer(uploadConfig);

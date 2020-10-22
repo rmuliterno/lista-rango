@@ -2,7 +2,7 @@ import {
   Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn,
 } from 'typeorm';
 
-import Restaurant from './Restaurant';
+import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
 
 @Entity('products')
 class Product {
