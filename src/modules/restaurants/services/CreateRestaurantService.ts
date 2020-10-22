@@ -2,6 +2,7 @@ import { startOfHour, isEqual } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
 import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
+import { inject, injectable } from 'tsyringe';
 import IRestaurantsRepository from '../repositories/IRestaurantsRepository';
 
 interface Request {
@@ -13,8 +14,12 @@ interface Request {
   specialHoursEnd: Date;
 }
 
+@injectable()
 class CreateRestaurantService {
-  constructor(private restaurantsRepository: IRestaurantsRepository) {}
+  constructor(
+    @inject('RestaurantsRepository')
+    private restaurantsRepository: IRestaurantsRepository,
+  ) {}
 
   public async execute({
     name, address, regularHoursStart, regularHoursEnd, specialHoursEnd, specialHoursStart,

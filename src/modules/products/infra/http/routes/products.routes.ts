@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import multer from 'multer';
+import { container } from 'tsyringe';
 
 import uploadConfig from '@config/upload';
 
 import CreateProductService from '@modules/products/services/CreateProductService';
 import UpdateProductService from '@modules/products/services/UpdateProductPictureService';
-import ProductsRepository from '@modules/products/infra/typeorm/repositories/ProductsRepository';
 
 const productsRouter = Router();
 const upload = multer(uploadConfig);
-const productsRepository = new ProductsRepository();
 
 // productsRouter.get('/', async (request, response) => {
 //   const productsRepository = getRepository(Product);
@@ -23,7 +22,7 @@ productsRouter.post('/', async (request, response) => {
     name, price, category, restaurant_id,
   } = request.body;
 
-  const createProduct = new CreateProductService(productsRepository);
+  const createProduct = container.resolve(CreateProductService);
 
   const product = await createProduct.execute({
     name, price, category, restaurant_id,
@@ -33,7 +32,7 @@ productsRouter.post('/', async (request, response) => {
 });
 
 productsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  const updateProductPicture = new UpdateProductService(productsRepository);
+  const updateProductPicture = container.resolve(UpdateProductService);
 
   const product = await updateProductPicture.execute({
     product_id: request.params.id,

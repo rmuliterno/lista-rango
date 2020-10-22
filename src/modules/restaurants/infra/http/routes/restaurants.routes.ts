@@ -1,23 +1,21 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
-import { getCustomRepository } from 'typeorm';
+import { container } from 'tsyringe';
 import multer from 'multer';
 import uploadConfig from '@config/upload';
 
-import RestaurantsRepository from '@modules/restaurants/infra/typeorm/repositories/RestaurantsRepository';
 import CreateRestaurantService from '@modules/restaurants/services/CreateRestaurantService';
 import UpdateRestaurantPictureService from '@modules/restaurants/services/UpdateRestaurantPictureService';
 
 const restaurantsRouter = Router();
 const upload = multer(uploadConfig);
-const restaurantsRepository = new RestaurantsRepository();
 
-restaurantsRouter.get('/', async (request, response) => {
-  const restaurantsRepository = getCustomRepository(RestaurantsRepository);
-  const restaurants = await restaurantsRepository.find();
+// restaurantsRouter.get('/', async (request, response) => {
+//   const restaurantsRepository = getCustomRepository(RestaurantsRepository);
+//   const restaurants = await restaurantsRepository.find();
 
-  return response.json(restaurants);
-});
+//   return response.json(restaurants);
+// });
 
 restaurantsRouter.post('/', async (request, response) => {
   const {
@@ -29,7 +27,7 @@ restaurantsRouter.post('/', async (request, response) => {
     specialHoursEnd,
   } = request.body;
 
-  const createRestaurant = new CreateRestaurantService(restaurantsRepository);
+  const createRestaurant = container.resolve(CreateRestaurantService);
 
   const restaurant = await createRestaurant.execute({
     name,
@@ -44,7 +42,7 @@ restaurantsRouter.post('/', async (request, response) => {
 });
 
 restaurantsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  const updateRestaurantPicture = new UpdateRestaurantPictureService(restaurantsRepository);
+  const updateRestaurantPicture = container.resolve(UpdateRestaurantPictureService);
 
   const restaurant = await updateRestaurantPicture.execute({
     restaurant_id: request.params.id,

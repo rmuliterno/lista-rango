@@ -4,15 +4,20 @@ import fs from 'fs';
 import AppError from '@shared/errors/AppError';
 import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
 import uploadConfig from '@config/upload';
-import IUsersRepository from '../repositories/IRestaurantsRepository';
+import { inject, injectable } from 'tsyringe';
+import IRestaurantsRepository from '../repositories/IRestaurantsRepository';
 
 interface Request {
   restaurant_id: string;
   pictureFilename: string;
 }
 
+@injectable()
 class UpdateRestaurantPictureService {
-  constructor(private restaurantsRepository: IUsersRepository) {}
+  constructor(
+    @inject('RestaurantsRepository')
+    private restaurantsRepository: IRestaurantsRepository,
+  ) {}
 
   public async execute({ restaurant_id, pictureFilename }: Request): Promise<Restaurant> {
     const restaurant = await this.restaurantsRepository.findById(restaurant_id);

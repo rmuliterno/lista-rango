@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
+import { injectable, inject } from 'tsyringe';
 import IProductsRepository from '../repositories/IProductsRepository';
 import Product from '../infra/typeorm/entities/Product';
 
@@ -12,8 +13,12 @@ interface Request {
   pictureFilename: string;
 }
 
+@injectable()
 class UpdateProductPictureService {
-  constructor(private productsRepository: IProductsRepository) {}
+  constructor(
+    @inject('ProductsRepository')
+    private productsRepository: IProductsRepository,
+  ) {}
 
   public async execute({ product_id, pictureFilename }: Request): Promise<Product> {
     const productsRepository = getRepository(Product);
