@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
 import AppError from '@shared/errors/AppError';
 import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
 import uploadConfig from '@config/upload';
+import IUsersRepository from '../repositories/IRestaurantsRepository';
 
 interface Request {
   restaurant_id: string;
@@ -12,10 +12,10 @@ interface Request {
 }
 
 class UpdateRestaurantPictureService {
-  public async execute({ restaurant_id, pictureFilename }: Request): Promise<Restaurant> {
-    const restaurantsRepository = getRepository(Restaurant);
+  constructor(private restaurantsRepository: IUsersRepository) {}
 
-    const restaurant = await restaurantsRepository.findOne(restaurant_id);
+  public async execute({ restaurant_id, pictureFilename }: Request): Promise<Restaurant> {
+    const restaurant = await this.restaurantsRepository.findById(restaurant_id);
 
     if (!restaurant) {
       throw new AppError('Restaurant not found!', 404);
@@ -33,7 +33,7 @@ class UpdateRestaurantPictureService {
 
     restaurant.picture = pictureFilename;
 
-    await restaurantsRepository.save(restaurant);
+    await this.restaurantsRepository.save(restaurant);
 
     return restaurant;
   }

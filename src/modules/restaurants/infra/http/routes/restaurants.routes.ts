@@ -4,12 +4,13 @@ import { getCustomRepository } from 'typeorm';
 import multer from 'multer';
 import uploadConfig from '@config/upload';
 
-import RestaurantsRepository from '@modules/restaurants/repositories/RestaurantsRepository';
+import RestaurantsRepository from '@modules/restaurants/infra/typeorm/repositories/RestaurantsRepository';
 import CreateRestaurantService from '@modules/restaurants/services/CreateRestaurantService';
 import UpdateRestaurantPictureService from '@modules/restaurants/services/UpdateRestaurantPictureService';
 
 const restaurantsRouter = Router();
 const upload = multer(uploadConfig);
+const restaurantsRepository = new RestaurantsRepository();
 
 restaurantsRouter.get('/', async (request, response) => {
   const restaurantsRepository = getCustomRepository(RestaurantsRepository);
@@ -28,7 +29,7 @@ restaurantsRouter.post('/', async (request, response) => {
     specialHoursEnd,
   } = request.body;
 
-  const createRestaurant = new CreateRestaurantService();
+  const createRestaurant = new CreateRestaurantService(restaurantsRepository);
 
   const restaurant = await createRestaurant.execute({
     name,
@@ -43,7 +44,7 @@ restaurantsRouter.post('/', async (request, response) => {
 });
 
 restaurantsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  const updateRestaurantPicture = new UpdateRestaurantPictureService();
+  const updateRestaurantPicture = new UpdateRestaurantPictureService(restaurantsRepository);
 
   const restaurant = await updateRestaurantPicture.execute({
     restaurant_id: request.params.id,

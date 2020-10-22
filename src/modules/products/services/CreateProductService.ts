@@ -1,10 +1,8 @@
-import { getCustomRepository } from 'typeorm';
-
 import AppError from '@shared/errors/AppError';
-import ProductsRepository from '../repositories/ProductsRepository';
 import Product from '../infra/typeorm/entities/Product';
+import IProductsRepository from '../repositories/IProductsRepository';
 
-interface Request {
+interface IRequest {
   name: string;
   price: number;
   category: string;
@@ -12,27 +10,23 @@ interface Request {
 }
 
 class CreateProductService {
+  constructor(private productsRepository: IProductsRepository) {}
+
   public async execute({
     name, price, category, restaurant_id,
-  }: Request): Promise<Product> {
-    const productsRepository = getCustomRepository(ProductsRepository);
-
-    const checkProductExists = await productsRepository.findOne({
-      where: { name, restaurant_id },
-    });
+  }: IRequest): Promise<Product> {
+    const checkProductExists = await this.productsRepository.findOne({ name, restaurant_id });
 
     if (checkProductExists) {
       throw new AppError('Product already registered in this Restaurant');
     }
 
-    const product = await productsRepository.create({
+    const product = await this.productsRepository.create({
       name,
       price,
       category,
       restaurant_id,
     });
-
-    await productsRepository.save(product);
 
     return product;
   }

@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
+import IProductsRepository from '../repositories/IProductsRepository';
 import Product from '../infra/typeorm/entities/Product';
 
 interface Request {
@@ -12,10 +13,12 @@ interface Request {
 }
 
 class UpdateProductPictureService {
+  constructor(private productsRepository: IProductsRepository) {}
+
   public async execute({ product_id, pictureFilename }: Request): Promise<Product> {
     const productsRepository = getRepository(Product);
 
-    const product = await productsRepository.findOne(product_id);
+    const product = await this.productsRepository.findById(product_id);
 
     if (!product) {
       throw new AppError('product not found!', 404);
