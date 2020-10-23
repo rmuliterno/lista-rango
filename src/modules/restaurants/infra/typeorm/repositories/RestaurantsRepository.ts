@@ -28,6 +28,26 @@ class RestaurantsRepository implements IRestaurantsRepository {
 
     return restaurant;
   }
+
+  public async find(): Promise<Restaurant[]> {
+    const restaurants = await this.ormRepository.find();
+
+    return restaurants;
+  }
+
+  public async update(restaurantData: ICreateRestaurantDTO): Promise<Restaurant> {
+    const restaurant = this.ormRepository.create(restaurantData);
+
+    await this.ormRepository.save(restaurant);
+
+    return restaurant;
+  }
+
+  public async delete(id: string): Promise<string> {
+    await this.ormRepository.delete(id);
+
+    return 'Success!';
+  }
 }
 
 export default RestaurantsRepository;

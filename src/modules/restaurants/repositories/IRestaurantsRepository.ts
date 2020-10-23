@@ -5,5 +5,7 @@ export default interface IRestaurantsRepository {
   findById(id: string): Promise<Restaurant | undefined>;
   create(data: ICreateRestaurantDTO): Promise<Restaurant>;
   save(restaurant: Restaurant): Promise<Restaurant>;
+  delete(id: string): Promise<string>;
+  find(): Promise<Restaurant[]>;
 // eslint-disable-next-line semi
 };

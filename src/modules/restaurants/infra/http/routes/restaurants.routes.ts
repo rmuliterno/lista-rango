@@ -10,14 +10,11 @@ const upload = multer(uploadConfig);
 const restaurantsController = new RestaurantsController();
 const restaurantsPictureController = new RestaurantsPictureController();
 
-// restaurantsRouter.get('/', async (request, response) => {
-//   const restaurantsRepository = getCustomRepository(RestaurantsRepository);
-//   const restaurants = await restaurantsRepository.find();
-
-//   return response.json(restaurants);
-// });
-
 restaurantsRouter.post('/', restaurantsController.create);
+restaurantsRouter.get('/', restaurantsController.list);
+restaurantsRouter.get('/:id', restaurantsController.show);
+restaurantsRouter.put('/:id', restaurantsController.update);
+restaurantsRouter.delete('/:id', restaurantsController.delete);
 
 restaurantsRouter.patch('/:id/picture', upload.single('picture'), restaurantsPictureController.update);
 

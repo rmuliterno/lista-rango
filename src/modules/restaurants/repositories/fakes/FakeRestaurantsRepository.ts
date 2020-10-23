@@ -32,6 +32,18 @@ class RestaurantsRepository implements IRestaurantsRepository {
 
     return findRestaurant;
   }
+
+  public async find(): Promise<Restaurant[]> {
+    return this.restaurants;
+  }
+
+  public async delete(id: string): Promise<string> {
+    const filteredRestaurants = this.restaurants.filter((restaurant) => restaurant.id === id);
+
+    this.restaurants = filteredRestaurants;
+
+    return 'Success!';
+  }
 }
 
 export default RestaurantsRepository;
