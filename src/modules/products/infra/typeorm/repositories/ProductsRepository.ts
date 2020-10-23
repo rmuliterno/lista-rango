@@ -42,6 +42,19 @@ class ProductsRepository implements IProductsRepository {
 
     return product;
   }
+
+  public async findByRestaurant(id: string): Promise<Product[] | undefined> {
+    const products = await this.ormRepository.find({
+      where: {
+        restaurant_id: id,
+      },
+      order: {
+        name: 'ASC',
+      },
+    });
+
+    return products;
+  }
 }
 
 export default ProductsRepository;

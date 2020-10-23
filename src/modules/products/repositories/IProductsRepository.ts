@@ -4,8 +4,9 @@ import ICreateProductDTO from '../dtos/ICreateProductDTO';
 export default interface IProductsRepository {
   create(data: ICreateProductDTO): Promise<Product>;
   findById(id: string): Promise<Product | undefined>;
+  findByRestaurant(id: string): Promise<Product[] | undefined>;
   save(product: Product): Promise<Product>;
-  delete(id: string): Promise<void>;
+  delete(id: string): Promise<string>;
   findOne(
     { name, restaurant_id }: {name: string, restaurant_id: string}
   ): Promise<Product | undefined>;
