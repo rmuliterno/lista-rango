@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
-import { differenceInMinutes, format, parseISO } from 'date-fns';
+import {
+  differenceInMinutes, format, parseISO, getMinutes, getHours,
+} from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
 import Product from '../infra/typeorm/entities/Product';
@@ -11,8 +13,8 @@ interface IRequest {
   saleDescription: string;
   salePrice: number;
   saleDays: string[];
-  saleStart?: Date;
-  saleEnd?: Date;
+  saleStart?: string;
+  saleEnd?: string;
 }
 
 @injectable()
@@ -47,19 +49,25 @@ class UpdateProductService {
     let saleEndValue = '';
 
     if (saleStart && saleEnd) {
-      const hoursStart = format(saleStart, 'HH:mm:ss');
-      const hoursEnd = format(saleEnd, 'HH:mm:ss');
+      const minutesStart = getMinutes(parseISO(saleStart));
+      const minutesEnd = getMinutes(parseISO(saleEnd));
 
-      if (differenceInMinutes(parseISO(hoursStart), parseISO(hoursEnd)) < 0) {
+      const hoursStart = getHours(parseISO(saleStart));
+      const hoursEnd = getHours(parseISO(saleEnd));
+
+      const startTime = new Date(2020, 0, 1, hoursStart, minutesStart);
+      const endTime = new Date(2020, 0, 1, hoursEnd, minutesEnd);
+
+      if (differenceInMinutes(endTime, startTime) <= 0) {
         throw new AppError('Invalid range for the sale period');
       }
 
-      if (differenceInMinutes(parseISO(hoursStart), parseISO(hoursEnd)) <= 14) {
+      if (differenceInMinutes(endTime, startTime) <= 14) {
         throw new AppError('You must specify a period grater than 14 minutes for the interval for the sale!');
       }
 
-      saleStartValue = format(saleStart, 'HH:mm');
-      saleEndValue = format(saleEnd, 'HH:mm');
+      saleStartValue = format(parseISO(saleStart), 'HH:mm');
+      saleEndValue = format(parseISO(saleEnd), 'HH:mm');
     }
 
     Object.assign(product,
