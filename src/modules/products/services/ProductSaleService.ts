@@ -33,18 +33,6 @@ class UpdateProductService {
       throw new AppError('Product not found');
     }
 
-    if (!salePrice) {
-      throw new AppError('The price for the sale must be provided');
-    }
-
-    if (!saleDescription) {
-      throw new AppError('The description for the sale must be provided');
-    }
-
-    if (!saleDays) {
-      throw new AppError('The days of the sale must be specified');
-    }
-
     let saleStartValue = '';
     let saleEndValue = '';
 

@@ -25,7 +25,7 @@ class ListRestaurantProductsService {
     const products = await this.productsRepository.findByRestaurant(id);
 
     if (!products) {
-      throw new AppError('Error while getting all products!');
+      throw new AppError('An error ocurred while fetching the products!');
     }
 
     return products;

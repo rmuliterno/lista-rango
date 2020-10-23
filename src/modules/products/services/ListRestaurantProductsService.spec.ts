@@ -50,7 +50,7 @@ describe('ListProduct', () => {
     const listed = await listRestaurantProducts.execute(restaurant.id);
 
     expect(listed[0].name).toBe(product1.name);
-    expect(listed[1].name).toBe(product2.name);
+    expect(listed[1]?.name).toBe(product2.name);
   });
 
   it('should not be able to list products from a non-existing restaurant', async () => {
