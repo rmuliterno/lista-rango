@@ -24,6 +24,12 @@ class CreateRestaurantService {
   public async execute({
     name, address, regularHoursStart, regularHoursEnd, specialHoursEnd, specialHoursStart,
   }: Request): Promise<Restaurant> {
+    const checkRestaurant = await this.restaurantsRepository.findByName(name);
+
+    if (checkRestaurant) {
+      throw new AppError('This restaurant already exists!');
+    }
+
     const parsedRegularHoursStartDate = startOfHour(regularHoursStart);
     const parsedRegularHoursEndDate = startOfHour(regularHoursEnd);
     const parsedSpecialHoursStartDate = startOfHour(specialHoursStart);

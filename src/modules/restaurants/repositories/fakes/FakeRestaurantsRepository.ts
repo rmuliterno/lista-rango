@@ -33,6 +33,12 @@ class RestaurantsRepository implements IRestaurantsRepository {
     return findRestaurant;
   }
 
+  public async findByName(name: string): Promise<Restaurant | undefined> {
+    const findRestaurant = this.restaurants.find((restaurant) => restaurant.name === name);
+
+    return findRestaurant;
+  }
+
   public async find(): Promise<Restaurant[]> {
     return this.restaurants;
   }
