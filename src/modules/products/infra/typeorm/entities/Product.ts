@@ -28,6 +28,24 @@ class Product {
   @Column()
   category: string;
 
+  @Column()
+  sale: string;
+
+  @Column()
+  saleDescription: string;
+
+  @Column()
+  salePrice: number;
+
+  @Column({ type: 'text', array: true, nullable: true })
+  saleDays: string[];
+
+  @Column()
+  saleStart: string;
+
+  @Column()
+  saleEnd: string;
+
   @CreateDateColumn()
   created_at: Date;
 
