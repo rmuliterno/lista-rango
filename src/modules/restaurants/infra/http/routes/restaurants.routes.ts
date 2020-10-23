@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import { parseISO } from 'date-fns';
-import { container } from 'tsyringe';
 import multer from 'multer';
 import uploadConfig from '@config/upload';
 
-import CreateRestaurantService from '@modules/restaurants/services/CreateRestaurantService';
-import UpdateRestaurantPictureService from '@modules/restaurants/services/UpdateRestaurantPictureService';
+import RestaurantsController from '../controllers/RestaurantsController';
+import RestaurantsPictureController from '../controllers/RestaurantsPictureController';
 
 const restaurantsRouter = Router();
 const upload = multer(uploadConfig);
+const restaurantsController = new RestaurantsController();
+const restaurantsPictureController = new RestaurantsPictureController();
 
 // restaurantsRouter.get('/', async (request, response) => {
 //   const restaurantsRepository = getCustomRepository(RestaurantsRepository);
@@ -17,39 +17,8 @@ const upload = multer(uploadConfig);
 //   return response.json(restaurants);
 // });
 
-restaurantsRouter.post('/', async (request, response) => {
-  const {
-    name,
-    address,
-    regularHoursStart,
-    regularHoursEnd,
-    specialHoursStart,
-    specialHoursEnd,
-  } = request.body;
+restaurantsRouter.post('/', restaurantsController.create);
 
-  const createRestaurant = container.resolve(CreateRestaurantService);
-
-  const restaurant = await createRestaurant.execute({
-    name,
-    address,
-    regularHoursStart: parseISO(regularHoursStart),
-    regularHoursEnd: parseISO(regularHoursEnd),
-    specialHoursStart: parseISO(specialHoursStart),
-    specialHoursEnd: parseISO(specialHoursEnd),
-  });
-
-  return response.json(restaurant);
-});
-
-restaurantsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  const updateRestaurantPicture = container.resolve(UpdateRestaurantPictureService);
-
-  const restaurant = await updateRestaurantPicture.execute({
-    restaurant_id: request.params.id,
-    pictureFilename: request.file.filename,
-  });
-
-  return response.json(restaurant);
-});
+restaurantsRouter.patch('/:id/picture', upload.single('picture'), restaurantsPictureController.update);
 
 export default restaurantsRouter;

@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { container } from 'tsyringe';
 
 import uploadConfig from '@config/upload';
 
-import CreateProductService from '@modules/products/services/CreateProductService';
-import UpdateProductService from '@modules/products/services/UpdateProductPictureService';
+import ProductsController from '../controllers/ProductsController';
+import ProductsPictureController from '../controllers/ProductsPictureController';
 
 const productsRouter = Router();
 const upload = multer(uploadConfig);
+const productsController = new ProductsController();
+const productsPictureController = new ProductsPictureController();
 
 // productsRouter.get('/', async (request, response) => {
 //   const productsRepository = getRepository(Product);
@@ -17,29 +18,8 @@ const upload = multer(uploadConfig);
 //   return response.json(products);
 // });
 
-productsRouter.post('/', async (request, response) => {
-  const {
-    name, price, category, restaurant_id,
-  } = request.body;
+productsRouter.post('/', productsController.create);
 
-  const createProduct = container.resolve(CreateProductService);
-
-  const product = await createProduct.execute({
-    name, price, category, restaurant_id,
-  });
-
-  return response.json(product);
-});
-
-productsRouter.patch('/:id/picture', upload.single('picture'), async (request, response) => {
-  const updateProductPicture = container.resolve(UpdateProductService);
-
-  const product = await updateProductPicture.execute({
-    product_id: request.params.id,
-    pictureFilename: request.file.filename,
-  });
-
-  return response.json(product);
-});
+productsRouter.patch('/:id/picture', upload.single('picture'), productsPictureController.update);
 
 export default productsRouter;
