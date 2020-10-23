@@ -1,10 +1,7 @@
-import { getRepository } from 'typeorm';
-import path from 'path';
-import fs from 'fs';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import uploadConfig from '@config/upload';
-import { injectable, inject } from 'tsyringe';
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import IProductsRepository from '../repositories/IProductsRepository';
 import Product from '../infra/typeorm/entities/Product';
 
@@ -18,11 +15,12 @@ class UpdateProductPictureService {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({ product_id, pictureFilename }: Request): Promise<Product> {
-    const productsRepository = getRepository(Product);
-
     const product = await this.productsRepository.findById(product_id);
 
     if (!product) {
@@ -31,17 +29,14 @@ class UpdateProductPictureService {
 
     // Deleting old file if it exists
     if (product.picture) {
-      const productPictureFilePath = path.join(uploadConfig.directory, product.picture);
-      const productPictureExists = await fs.promises.stat(productPictureFilePath);
-
-      if (productPictureExists) {
-        await fs.promises.unlink(productPictureFilePath);
-      }
+      await this.storageProvider.deleteFile(product.picture);
     }
 
-    product.picture = pictureFilename;
+    const filename = await this.storageProvider.saveFile(pictureFilename);
 
-    await productsRepository.save(product);
+    product.picture = filename;
+
+    await this.productsRepository.save(product);
 
     return product;
   }

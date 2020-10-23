@@ -15,7 +15,7 @@ describe('CreateRestaurant', () => {
     const specialHourEndDate = new Date(202, 9, 23, 18);
 
     const restaurant = await createRestaurant.execute({
-      name: 'Coca-cola',
+      name: 'Tropical Grill',
       address: 'Rua Affonso Celso Dias, 151',
       regularHoursStart: regularHourStartDate,
       regularHoursEnd: regularHourEndDate,
@@ -30,17 +30,16 @@ describe('CreateRestaurant', () => {
     const fakeRestaurantsRepository = new FakeRestaurantsRepository();
     const createRestaurant = new CreateRestaurantService(fakeRestaurantsRepository);
 
-    const regularHourStartDate = new Date(2020, 9, 23, 8);
-    const regularHourEndDate = new Date(2020, 9, 23, 8);
+    const regularHour = new Date(2020, 9, 23, 8);
 
     const specialHourStartDate = new Date(2020, 9, 23, 10);
     const specialHourEndDate = new Date(202, 9, 23, 18);
 
     expect(createRestaurant.execute({
-      name: 'Coca-cola',
+      name: 'Tropical Grill',
       address: 'Rua Affonso Celso Dias, 151',
-      regularHoursStart: regularHourStartDate,
-      regularHoursEnd: regularHourEndDate,
+      regularHoursStart: regularHour,
+      regularHoursEnd: regularHour,
       specialHoursStart: specialHourStartDate,
       specialHoursEnd: specialHourEndDate,
     })).rejects.toBeInstanceOf(AppError);
@@ -53,16 +52,15 @@ describe('CreateRestaurant', () => {
     const regularHourStartDate = new Date(2020, 9, 23, 8);
     const regularHourEndDate = new Date(2020, 9, 23, 20);
 
-    const specialHourStartDate = new Date(2020, 9, 23, 10);
-    const specialHourEndDate = new Date(202, 9, 23, 10);
+    const specialHour = new Date(2020, 9, 23, 10);
 
     expect(createRestaurant.execute({
-      name: 'Coca-cola',
+      name: 'Tropical Grill',
       address: 'Rua Affonso Celso Dias, 151',
       regularHoursStart: regularHourStartDate,
       regularHoursEnd: regularHourEndDate,
-      specialHoursStart: specialHourStartDate,
-      specialHoursEnd: specialHourEndDate,
+      specialHoursStart: specialHour,
+      specialHoursEnd: specialHour,
     })).rejects.toBeInstanceOf(AppError);
   });
 });

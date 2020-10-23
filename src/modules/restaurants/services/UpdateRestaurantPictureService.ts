@@ -1,10 +1,9 @@
-import path from 'path';
-import fs from 'fs';
+import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import Restaurant from '@modules/restaurants/infra/typeorm/entities/Restaurant';
-import uploadConfig from '@config/upload';
-import { inject, injectable } from 'tsyringe';
+
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import IRestaurantsRepository from '../repositories/IRestaurantsRepository';
 
 interface Request {
@@ -17,6 +16,9 @@ class UpdateRestaurantPictureService {
   constructor(
     @inject('RestaurantsRepository')
     private restaurantsRepository: IRestaurantsRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({ restaurant_id, pictureFilename }: Request): Promise<Restaurant> {
@@ -28,15 +30,12 @@ class UpdateRestaurantPictureService {
 
     // Deleting old file if it exists
     if (restaurant.picture) {
-      const restaurantPictureFilePath = path.join(uploadConfig.directory, restaurant.picture);
-      const restaurantPictureExists = await fs.promises.stat(restaurantPictureFilePath);
-
-      if (restaurantPictureExists) {
-        await fs.promises.unlink(restaurantPictureFilePath);
-      }
+      await this.storageProvider.deleteFile(restaurant.picture);
     }
 
-    restaurant.picture = pictureFilename;
+    const filename = await this.storageProvider.saveFile(pictureFilename);
+
+    restaurant.picture = filename;
 
     await this.restaurantsRepository.save(restaurant);
 

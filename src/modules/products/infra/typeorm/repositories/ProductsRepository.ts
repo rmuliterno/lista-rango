@@ -29,6 +29,14 @@ class ProductsRepository implements IProductsRepository {
     return product;
   }
 
+  public async save(product: Product): Promise<Product> {
+    return this.ormRepository.save(product);
+  }
+
+  public async delete(id: string): Promise<void> {
+    this.ormRepository.delete(id);
+  }
+
   public async findById(id: string): Promise<Product | undefined> {
     const product = await this.ormRepository.findOne(id);
 

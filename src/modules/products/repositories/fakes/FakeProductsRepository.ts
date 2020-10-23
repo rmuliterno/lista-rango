@@ -31,6 +31,16 @@ class ProductsRepository implements IProductsRepository {
     return findProduct;
   }
 
+  public async save(product: Product): Promise<Product> {
+    const findIndex = this.products.findIndex(
+      (findProduct) => findProduct.id === product.id,
+    );
+
+    this.products[findIndex] = product;
+
+    return product;
+  }
+
   public async findById(id: string): Promise<Product | undefined> {
     const findProduct = this.products.find((product) => product.id === id);
 

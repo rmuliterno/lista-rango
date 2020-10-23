@@ -11,12 +11,11 @@ const upload = multer(uploadConfig);
 const productsController = new ProductsController();
 const productsPictureController = new ProductsPictureController();
 
-// productsRouter.get('/', async (request, response) => {
-//   const productsRepository = getRepository(Product);
-//   const products = await productsRepository.find();
+productsRouter.get('/:id', productsController.read);
 
-//   return response.json(products);
-// });
+productsRouter.put('/:id', productsController.update);
+
+productsRouter.delete('/:id', productsController.delete);
 
 productsRouter.post('/', productsController.create);
 
